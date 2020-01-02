@@ -1,4 +1,4 @@
-package medium;
+package medium.add2numbers;
 
 /**
  * TODO:Add Two Numbers
