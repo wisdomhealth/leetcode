@@ -1,5 +1,8 @@
 package medium.PrintFooBarAlternately;
 
+
+import java.util.concurrent.Semaphore;
+
 /**
  * TODO:Print FooBar Alternately
  * Suppose we have a class:
@@ -33,9 +36,6 @@ package medium.PrintFooBarAlternately;
  * Output: "foobarfoobar"
  * Explanation: "foobar" is being output 2 times.
  */
-
-import java.util.concurrent.Semaphore;
-
 /**
  * 代码提交结果：
  * Status: Accepted
