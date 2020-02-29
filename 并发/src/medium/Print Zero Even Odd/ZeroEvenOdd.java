@@ -40,33 +40,46 @@ package medium.add2numbers;
  * Memory Usage: 39.2 MB
  */
 
-class Foo {
-
-    private Semaphore semaphore_second,semaphore_third;
-
-    public Foo() {
-        semaphore_second = new Semaphore(0);
-        semaphore_third = new Semaphore(0);
+class ZeroEvenOdd {
+    private int n;
+    private Semaphore semaphore_zero, semaphore_even, semaphore_odd;
+    public ZeroEvenOdd(int n) {
+        this.n = n;
+        semaphore_zero = new Semaphore(1);
+        semaphore_even = new Semaphore(0);
+        semaphore_odd = new Semaphore(0);
     }
 
-    public void first(Runnable printFirst) throws InterruptedException {
-
-        // printFirst.run() outputs "first". Do not change or remove this line.
-        printFirst.run();
-        semaphore_second.release();
-
+    // printNumber.accept(x) outputs "x", where x is an integer.
+    public void zero(IntConsumer printNumber) throws InterruptedException {
+        int i=0;
+        while(i<n) {
+            semaphore_zero.acquire();
+            printNumber.accept(0);
+            if (i%2!=0) {
+                semaphore_even.release();
+            } else {
+                semaphore_odd.release();
+            }
+            semaphore_zero.acquire();
+            i++;
+            semaphore_zero.release();
+        }
     }
-
-    public void second(Runnable printSecond) throws InterruptedException {
-        semaphore_second.acquire();
-        // printSecond.run() outputs "second". Do not change or remove this line.
-        printSecond.run();
-        semaphore_third.release();
+    //偶数
+    public void even(IntConsumer printNumber) throws InterruptedException {
+        for(int i=2;i<=n;i=i+2) {
+            semaphore_even.acquire();
+            printNumber.accept(i);
+            semaphore_zero.release();
+        }
     }
-
-    public void third(Runnable printThird) throws InterruptedException {
-        semaphore_third.acquire();
-        // printThird.run() outputs "third". Do not change or remove this line.
-        printThird.run();
+    //奇数
+    public void odd(IntConsumer printNumber) throws InterruptedException {
+        for(int i=1;i<=n;i=i+2) {
+            semaphore_odd.acquire();
+            printNumber.accept(i);
+            semaphore_zero.release();
+        }
     }
 }
