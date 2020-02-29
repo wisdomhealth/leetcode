@@ -1,4 +1,4 @@
-package medium.add2numbers;
+package easy.PrintinOrder;
 
 /**
  * TODO:Print in Order
@@ -23,6 +23,8 @@ package medium.add2numbers;
  * Explanation: The input [1,3,2] means thread A calls first(), thread B calls third(), and thread C calls second(). "firstsecondthird" is the correct output.
  */
 
+import java.util.concurrent.Semaphore;
+
 /**
  * 代码提交结果：
  * Status: Accepted
@@ -32,29 +34,30 @@ package medium.add2numbers;
 
 class Foo {
 
+    private Semaphore semaphore_second,semaphore_third;
+
     public Foo() {
-
+        semaphore_second = new Semaphore(0);
+        semaphore_third = new Semaphore(0);
     }
-
-    boolean flag1=false,flag2=false;
 
     public void first(Runnable printFirst) throws InterruptedException {
 
         // printFirst.run() outputs "first". Do not change or remove this line.
         printFirst.run();
-        flag1=true;
+        semaphore_second.release();
 
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        while (!flag1) ;
+        semaphore_second.acquire();
         // printSecond.run() outputs "second". Do not change or remove this line.
         printSecond.run();
-        flag2=true;
+        semaphore_third.release();
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        while (!flag2) ;
+        semaphore_third.acquire();
         // printThird.run() outputs "third". Do not change or remove this line.
         printThird.run();
     }
